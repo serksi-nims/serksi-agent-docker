@@ -1,5 +1,14 @@
 {
-  "navigationFallback": {
-    "rewrite": "/README.md"
+  "routes": [
+    {
+      "route": "/install",
+      "redirect": "/install.sh",
+      "statusCode": 302
+    }
+  ],
+  "mimeTypes": {
+    ".sh": "text/plain",
+    ".yml": "text/plain",
+    ".example": "text/plain"
   }
 }
