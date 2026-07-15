@@ -1,15 +1,4 @@
 {
-  "routes": [
-    {
-      "route": "/install",
-      "rewrite": "/install.sh"
-    }
-  ],
-  "mimeTypes": {
-    ".sh": "text/plain",
-    ".yml": "text/plain",
-    ".example": "text/plain"
-  },
   "navigationFallback": {
     "rewrite": "/README.md"
   }

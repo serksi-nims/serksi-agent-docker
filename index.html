@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Serksi Agent — Docker</title>
+<style>
+  body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+         max-width: 640px; margin: 60px auto; padding: 0 20px;
+         line-height: 1.6; color: #1a1a1a; }
+  h1 { font-size: 24px; margin-bottom: 4px; }
+  p.sub { color: #666; margin-top: 0; }
+  pre { background: #f4f4f5; padding: 14px 16px; border-radius: 6px;
+        overflow-x: auto; font-size: 14px; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  a { color: #0969da; }
+  .note { font-size: 14px; color: #666; }
+</style>
+</head>
+<body>
+  <h1>Serksi Agent — Docker</h1>
+  <p class="sub">Run the Serksi agent on your own Linux machine.</p>
+
+  <h2>Install</h2>
+  <pre><code>curl -sL https://get.serksi.com/install | sudo bash</code></pre>
+
+  <p>Then open <code>https://&lt;your-host-ip&gt;:5443</code> to register the agent.</p>
+
+  <h2>Manual install</h2>
+  <pre><code>sudo mkdir -p /opt/serksi-agent &amp;&amp; cd /opt/serksi-agent
+sudo curl -sLO https://get.serksi.com/docker-compose.yml
+sudo docker compose up -d</code></pre>
+
+  <p class="note">
+    Requires a Linux host on the network you want to monitor.
+    Full documentation:
+    <a href="https://github.com/serksi-nims/serksi-agent-docker">github.com/serksi-nims/serksi-agent-docker</a>
+  </p>
+</body>
+</html>
