@@ -1,0 +1,58 @@
+# Serksi Agent — Docker deployment
+#
+# Quick start:
+#   docker compose up -d
+#   then open https://<this-host-ip>:5443 to register
+#
+# Requires a Linux host: the agent uses host networking to see your LAN, which
+# does not work on Docker Desktop for Mac/Windows.
+
+services:
+  serksi-agent:
+    image: ghcr.io/serksi-nims/serksi-agent:latest
+    container_name: serksi-agent
+    restart: unless-stopped
+
+    # Required. The agent must share the host's network stack to discover
+    # devices (ARP sweeps, ping sweeps, passive listening). Bridge networking
+    # would hide your LAN from it.
+    network_mode: host
+
+    # Required. NET_RAW for raw packet capture (ARP/scapy); NET_ADMIN for
+    # interface management, including the WireGuard tunnel used by Remote Access.
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+
+    # Required for Remote Access (VPN) — wg-quick needs the TUN device to bring
+    # up the tunnel. Harmless if you never use Remote Access.
+    devices:
+      - /dev/net/tun:/dev/net/tun
+
+    environment:
+      # Leave empty to auto-detect the interface on your LAN (recommended).
+      # Set it only if the host has several NICs and you need a specific one —
+      # run `ip link` to list them.
+      - SERKSI_INTERFACE=${SERKSI_INTERFACE:-}
+
+      # Change only if you self-host the Serksi server.
+      - SERKSI_API_URL=${SERKSI_API_URL:-https://api.serksi.com}
+
+      # Optional: pre-register without the setup wizard (for automated
+      # deployments). Get these from portal.serksi.com → Site Settings.
+      - SERKSI_SITE_TOKEN=${SERKSI_SITE_TOKEN:-}
+      - SERKSI_SITE_ID=${SERKSI_SITE_ID:-}
+      - SERKSI_SITE_NAME=${SERKSI_SITE_NAME:-}
+
+    volumes:
+      # Registration — keeps the agent registered across restarts and updates.
+      - serksi-config:/etc/serksi
+      # TLS certificate for the setup wizard (generated on first boot).
+      - serksi-certs:/opt/serksi-agent/certs
+      # WireGuard config — keeps a Remote Access session alive across restarts.
+      - serksi-wireguard:/etc/wireguard
+
+volumes:
+  serksi-config:
+  serksi-certs:
+  serksi-wireguard:
